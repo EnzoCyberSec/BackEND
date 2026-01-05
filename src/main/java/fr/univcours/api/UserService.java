@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,10 @@ public class UserService {
     private List<User> users;
     private int nextId;
     private final ObjectMapper objectMapper;
+
+    private static final String JDBC_URL = "jdbc:mysql://10.211.55.3:3306/isen";
+    private static final String JDBC_USER = "enzo";
+    private static final String JDBC_PASSWORD = "azerty";
 
     public UserService() {
         this.objectMapper = new ObjectMapper();
@@ -74,6 +79,23 @@ public class UserService {
      * Récupère tous les utilisateurs
      */
     public List<User> getAllUsers() {
+
+        List<User> users = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM user")) {
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setEmail(rs.getString("email"));
+                user.setName(rs.getString("name"));
+                user.setAge(rs.getInt("age"));
+
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return users;
     }
 
