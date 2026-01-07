@@ -97,4 +97,20 @@ public class Plat {
 //end of modifiable zone..................E/7724aafd-0dc8-4b28-8021-09c398c7d113
     }
 
+    public Categorie getCategorie() {
+//begin of modifiable zone................T/d97545e0-53ad-4537-b1e0-a6f7b8cebc54
+        // Automatically generated method. Please delete this comment before entering specific code.
+//end of modifiable zone..................E/d97545e0-53ad-4537-b1e0-a6f7b8cebc54
+//begin of modifiable zone................T/d43b4aff-4749-4418-b6e5-aa8cbcb29d54
+        return this.categorie;
+//end of modifiable zone..................E/d43b4aff-4749-4418-b6e5-aa8cbcb29d54
+    }
+
+    public void setCategorie(final Categorie value) {
+//begin of modifiable zone................T/c000a7b7-848f-4925-8a17-585f376fc321
+        // Automatically generated method. Please delete this comment before entering specific code.
+        this.categorie = value;
+//end of modifiable zone..................E/c000a7b7-848f-4925-8a17-585f376fc321
+    }
+
 }

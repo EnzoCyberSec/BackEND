@@ -21,6 +21,9 @@ public class Categorie {
 //end of modifiable zone(JavaCode)........E/38e75ac8-0c68-4750-a86d-9a41bbf9b69b
     }
 
+    /**
+     * Constructeur vide
+     */
     public Categorie() {
 //begin of modifiable zone(JavaSuper).....C/133e1045-eda3-4101-859e-a1b8cd9df4d2
 

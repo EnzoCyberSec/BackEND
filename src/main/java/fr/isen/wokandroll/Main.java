@@ -3,7 +3,10 @@ package fr.isen.wokandroll;
 import io.javalin.Javalin;
 import fr.isen.wokandroll.service.CategorieService;
 import fr.isen.wokandroll.service.CategorieServiceImpl;
+import fr.isen.wokandroll.service.PlatService;
+import fr.isen.wokandroll.service.PlatServiceImpl;
 import fr.isen.wokandroll.model.Categorie;
+import fr.isen.wokandroll.model.Plat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +19,7 @@ import java.util.List;
 public class Main {
 
     private static CategorieService categorieService = new CategorieServiceImpl();
+    private static PlatService platService = new PlatServiceImpl();
 
     public static void main(String[] args) {
         // Créer et configurer l'application Javalin
@@ -28,6 +32,7 @@ public class Main {
         // Message de démarrage
         System.out.println("🚀 Serveur WokAndRoll démarré sur http://localhost:7001");
         System.out.println("📋 Page categories : http://localhost:7001/categories");
+        System.out.println("📋 Page plats : http://localhost:7001/plats");
 
         // Route GET /categories - récupère toutes les catégories
         app.get("/categories", ctx -> {
@@ -35,7 +40,7 @@ public class Main {
             ctx.json(categories);
         });
 
-        // Route GET /categories/{id} - récupère une catégorie par ID
+        // Route GET /categories/{id} - récupère une catégorie via l'id
         app.get("/categories/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Categorie categorie = categorieService.findById(id);
@@ -45,6 +50,31 @@ public class Main {
             } else {
                 ctx.status(404).result("Catégorie non trouvée");
             }
+        });
+
+        // Route GET /plats - récupère tous les plats
+        app.get("/plats", ctx -> {
+            List<Plat> plats = platService.findAll();
+            ctx.json(plats);
+        });
+
+        // Route GET /plats/{id} - récupère un plat via l'id
+        app.get("/plats/{id}", ctx -> {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            Plat plat = platService.findById(id);
+
+            if (plat != null) {
+                ctx.json(plat);
+            } else {
+                ctx.status(404).result("Plat non trouvé");
+            }
+        });
+
+        // Route GET /categories/{id}/plats - récupère les plats d'une catégorie
+        app.get("/categories/{id}/plats", ctx -> {
+            int idCategorie = Integer.parseInt(ctx.pathParam("id"));
+            List<Plat> plats = platService.findByCategorie(idCategorie);
+            ctx.json(plats);
         });
 
         // Route GET / - page d'accueil (HTML)
@@ -58,8 +88,6 @@ public class Main {
      */
     private static String getWelcomeHTML() {
         try {
-            // Mets ton fichier HTML (consignes/projet) dans src/main/resources/
-            // et adapte le nom ici (par ex. "index.html" ou "wokandroll.html")
             InputStream inputStream = Main.class.getClassLoader()
                     .getResourceAsStream("welcome.html");
 
