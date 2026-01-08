@@ -149,7 +149,14 @@ public class Main {
             ctx.json(lignes);
         });
 
-        // (optionnel) POST /lignes - créer une ligne de commande
+        // POST /commandes - créer une nouvelle commande
+        app.post("/commandes", ctx -> {
+            Commande commande = ctx.bodyAsClass(Commande.class);
+            Commande created = commandeService.creerCommande(commande);
+            ctx.status(201).json(created);
+        });
+
+        // POST /lignes - créer une ligne de commande
         app.post("/lignes", ctx -> {
             LigneCommande ligne = ctx.bodyAsClass(LigneCommande.class);
             LigneCommande created = ligneCommandeService.creerLigneCommande(ligne);
