@@ -8,10 +8,16 @@ import fr.isen.wokandroll.service.PlatService;
 import fr.isen.wokandroll.service.PlatServiceImpl;
 import fr.isen.wokandroll.service.OptionService;
 import fr.isen.wokandroll.service.OptionServiceImpl;
+import fr.isen.wokandroll.service.CommandeService;
+import fr.isen.wokandroll.service.CommandeServiceImpl;
+import fr.isen.wokandroll.service.LigneCommandeService;
+import fr.isen.wokandroll.service.LigneCommandeServiceImpl;
 
 import fr.isen.wokandroll.model.Categorie;
 import fr.isen.wokandroll.model.Plat;
 import fr.isen.wokandroll.model.Option;
+import fr.isen.wokandroll.model.Commande;
+import fr.isen.wokandroll.model.LigneCommande;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +32,8 @@ public class Main {
     private static CategorieService categorieService = new CategorieServiceImpl();
     private static PlatService platService = new PlatServiceImpl();
     private static OptionService optionService = new OptionServiceImpl();
+    private static CommandeService commandeService = new CommandeServiceImpl();
+    private static LigneCommandeService ligneCommandeService = new LigneCommandeServiceImpl();
 
     public static void main(String[] args) {
         // Créer et configurer l'application Javalin
@@ -41,14 +49,20 @@ public class Main {
         System.out.println("📋 Page plats : http://localhost:7001/plats");
         System.out.println("📋 Page options : http://localhost:7001/options");
         System.out.println("📋 Options d'un plat : http://localhost:7001/plats/{id}/options");
+        System.out.println("📋 Commandes : http://localhost:7001/commandes");
+        System.out.println("📋 Lignes d'une commande : http://localhost:7001/commandes/{id}/lignes");
 
-        // Route GET /categories - récupère toutes les catégories
+        // =======================
+        //        CATEGORIES
+        // =======================
+
+        // GET /categories - toutes les catégories
         app.get("/categories", ctx -> {
             List<Categorie> categories = categorieService.findAll();
             ctx.json(categories);
         });
 
-        // Route GET /categories/{id} - récupère une catégorie via l'id
+        // GET /categories/{id} - une catégorie par id
         app.get("/categories/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Categorie categorie = categorieService.findById(id);
@@ -60,13 +74,17 @@ public class Main {
             }
         });
 
-        // Route GET /plats - récupère tous les plats
+        // =======================
+        //          PLATS
+        // =======================
+
+        // GET /plats - tous les plats
         app.get("/plats", ctx -> {
             List<Plat> plats = platService.findAll();
             ctx.json(plats);
         });
 
-        // Route GET /plats/{id} - récupère un plat via l'id
+        // GET /plats/{id} - un plat par id
         app.get("/plats/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Plat plat = platService.findById(id);
@@ -78,27 +96,71 @@ public class Main {
             }
         });
 
-        // Route GET /categories/{id}/plats - récupère les plats d'une catégorie
+        // GET /categories/{id}/plats - plats d'une catégorie
         app.get("/categories/{id}/plats", ctx -> {
             int idCategorie = Integer.parseInt(ctx.pathParam("id"));
             List<Plat> plats = platService.findByCategorie(idCategorie);
             ctx.json(plats);
         });
 
-        // Route GET /options - récupère toutes les options
+        // =======================
+        //         OPTIONS
+        // =======================
+
+        // GET /options - toutes les options
         app.get("/options", ctx -> {
             List<Option> options = optionService.findAll();
             ctx.json(options);
         });
 
-        // Route GET /plats/{id}/options - récupère les options d'un plat
+        // GET /plats/{id}/options - options d'un plat
         app.get("/plats/{id}/options", ctx -> {
             int idPlat = Integer.parseInt(ctx.pathParam("id"));
             List<Option> options = optionService.findByPlat(idPlat);
             ctx.json(options);
         });
 
-        // Route GET / - page d'accueil (HTML)
+        // =======================
+        //        COMMANDES
+        // =======================
+
+        // GET /commandes - toutes les commandes
+        app.get("/commandes", ctx -> {
+            List<Commande> commandes = commandeService.findAll();
+            ctx.json(commandes);
+        });
+
+        // GET /commandes/{id} - une commande par id
+        app.get("/commandes/{id}", ctx -> {
+            int id = Integer.parseInt(ctx.pathParam("id"));
+            Commande commande = commandeService.findById(id);
+
+            if (commande != null) {
+                ctx.json(commande);
+            } else {
+                ctx.status(404).result("Commande non trouvée");
+            }
+        });
+
+        // GET /commandes/{id}/lignes - lignes d'une commande
+        app.get("/commandes/{id}/lignes", ctx -> {
+            int idCommande = Integer.parseInt(ctx.pathParam("id"));
+            List<LigneCommande> lignes = ligneCommandeService.findByCommande(idCommande);
+            ctx.json(lignes);
+        });
+
+        // (optionnel) POST /lignes - créer une ligne de commande
+        app.post("/lignes", ctx -> {
+            LigneCommande ligne = ctx.bodyAsClass(LigneCommande.class);
+            LigneCommande created = ligneCommandeService.creerLigneCommande(ligne);
+            ctx.status(201).json(created);
+        });
+
+        // =======================
+        //        ACCUEIL HTML
+        // =======================
+
+        // GET / - page d'accueil (HTML)
         app.get("/", ctx -> {
             ctx.html(getWelcomeHTML());
         });
