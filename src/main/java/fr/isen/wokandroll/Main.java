@@ -1,12 +1,17 @@
 package fr.isen.wokandroll;
 
 import io.javalin.Javalin;
+
 import fr.isen.wokandroll.service.CategorieService;
 import fr.isen.wokandroll.service.CategorieServiceImpl;
 import fr.isen.wokandroll.service.PlatService;
 import fr.isen.wokandroll.service.PlatServiceImpl;
+import fr.isen.wokandroll.service.OptionService;
+import fr.isen.wokandroll.service.OptionServiceImpl;
+
 import fr.isen.wokandroll.model.Categorie;
 import fr.isen.wokandroll.model.Plat;
+import fr.isen.wokandroll.model.Option;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +25,7 @@ public class Main {
 
     private static CategorieService categorieService = new CategorieServiceImpl();
     private static PlatService platService = new PlatServiceImpl();
+    private static OptionService optionService = new OptionServiceImpl();
 
     public static void main(String[] args) {
         // Créer et configurer l'application Javalin
@@ -33,6 +39,8 @@ public class Main {
         System.out.println("🚀 Serveur WokAndRoll démarré sur http://localhost:7001");
         System.out.println("📋 Page categories : http://localhost:7001/categories");
         System.out.println("📋 Page plats : http://localhost:7001/plats");
+        System.out.println("📋 Page options : http://localhost:7001/options");
+        System.out.println("📋 Options d'un plat : http://localhost:7001/plats/{id}/options");
 
         // Route GET /categories - récupère toutes les catégories
         app.get("/categories", ctx -> {
@@ -75,6 +83,19 @@ public class Main {
             int idCategorie = Integer.parseInt(ctx.pathParam("id"));
             List<Plat> plats = platService.findByCategorie(idCategorie);
             ctx.json(plats);
+        });
+
+        // Route GET /options - récupère toutes les options
+        app.get("/options", ctx -> {
+            List<Option> options = optionService.findAll();
+            ctx.json(options);
+        });
+
+        // Route GET /plats/{id}/options - récupère les options d'un plat
+        app.get("/plats/{id}/options", ctx -> {
+            int idPlat = Integer.parseInt(ctx.pathParam("id"));
+            List<Option> options = optionService.findByPlat(idPlat);
+            ctx.json(options);
         });
 
         // Route GET / - page d'accueil (HTML)

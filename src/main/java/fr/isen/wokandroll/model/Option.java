@@ -8,6 +8,8 @@ public class Option {
 
     private String type;
 
+    private double prix;
+
     public int getIdOption() {
 //begin of modifiable zone................T/443a8e18-a28b-4362-ada5-531202803e11
         // Automatically generated method. Please delete this comment before entering specific code.
@@ -54,6 +56,22 @@ public class Option {
         // Automatically generated method. Please delete this comment before entering specific code.
         this.type = value;
 //end of modifiable zone..................E/bae7d805-859e-47b3-80bb-f0b859c0a0a7
+    }
+
+    public void setPrix(final double value) {
+//begin of modifiable zone................T/c11f598a-9004-401f-89ea-29874e7d3735
+        // Automatically generated method. Please delete this comment before entering specific code.
+        this.prix = value;
+//end of modifiable zone..................E/c11f598a-9004-401f-89ea-29874e7d3735
+    }
+
+    public double getPrix() {
+//begin of modifiable zone................T/1e9f4717-cb0b-4f38-b387-ec4fe836d875
+        // Automatically generated method. Please delete this comment before entering specific code.
+//end of modifiable zone..................E/1e9f4717-cb0b-4f38-b387-ec4fe836d875
+//begin of modifiable zone................T/8e92a786-db42-446e-9ccc-2c21cf938bed
+        return this.prix;
+//end of modifiable zone..................E/8e92a786-db42-446e-9ccc-2c21cf938bed
     }
 
 }
