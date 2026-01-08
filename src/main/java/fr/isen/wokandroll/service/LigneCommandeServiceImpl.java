@@ -22,7 +22,6 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 "INSERT INTO ligne_commande(quantite, prix_unitaire, id_commande, id_plat) " +
                         "VALUES (?, ?, ?, ?)";
 
-        // CORRECTION ICI : Le nom de la table est 'ligne_option' et non 'ligne_commande_option'
         final String SQL_INSERT_OPTION =
                 "INSERT INTO ligne_option(id_ligne_commande, id_option) " +
                         "VALUES (?, ?)";
@@ -109,7 +108,6 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 "SELECT id_ligne_commande, quantite, prix_unitaire, id_commande, id_plat " +
                         "FROM ligne_commande WHERE id_commande = ?";
 
-        // CORRECTION ICI EGALEMENT : 'ligne_option' au lieu de 'ligne_commande_option'
         final String SQL_FIND_OPTIONS_FOR_LIGNE =
                 "SELECT id_option FROM ligne_option WHERE id_ligne_commande = ?";
 
