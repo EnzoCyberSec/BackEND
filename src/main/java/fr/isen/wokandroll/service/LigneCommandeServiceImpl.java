@@ -22,10 +22,9 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 "INSERT INTO ligne_commande(quantite, prix_unitaire, id_commande, id_plat) " +
                         "VALUES (?, ?, ?, ?)";
 
-        // Table de jointure ligne_commande / option
-        // ⚠️ adapte le nom si différent dans ta BDD
+        // CORRECTION ICI : Le nom de la table est 'ligne_option' et non 'ligne_commande_option'
         final String SQL_INSERT_OPTION =
-                "INSERT INTO ligne_commande_option(id_ligne_commande, id_option) " +
+                "INSERT INTO ligne_option(id_ligne_commande, id_option) " +
                         "VALUES (?, ?)";
 
         LigneCommande result = ligneCommande;
@@ -43,17 +42,14 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                         SQL_INSERT_LIGNE,
                         Statement.RETURN_GENERATED_KEYS)) {
 
-                    // champs simples
                     stmt.setInt(1, ligneCommande.getQuantite());
                     stmt.setDouble(2, ligneCommande.getPrixUnitaire());
 
-                    // id de la commande associée
                     int idCommande = 0;
                     if (ligneCommande.getCommande() != null) {
                         idCommande = ligneCommande.getCommande().getIdCommande();
                     }
 
-                    // id du plat associé
                     int idPlat = 0;
                     if (ligneCommande.getPlat() != null) {
                         idPlat = ligneCommande.getPlat().getIdPlat();
@@ -64,7 +60,6 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
 
                     stmt.executeUpdate();
 
-                    // récupération de l'id auto‑généré
                     try (ResultSet rs = stmt.getGeneratedKeys()) {
                         if (rs.next()) {
                             int generatedId = rs.getInt(1);
@@ -73,14 +68,13 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                     }
                 }
 
-                // 2) Insert des options liées à cette ligne (si présentes)
+                // 2) Insert des options liées à cette ligne
                 Option[] options = ligneCommande.getOptions();
                 if (options != null && options.length > 0 && ligneCommande.getIdLigneCommande() != 0) {
                     try (PreparedStatement stmtOpt = connection.prepareStatement(SQL_INSERT_OPTION)) {
                         for (Option opt : options) {
-                            if (opt == null) {
-                                continue;
-                            }
+                            if (opt == null) continue;
+
                             stmtOpt.setInt(1, ligneCommande.getIdLigneCommande());
                             stmtOpt.setInt(2, opt.getIdOption());
                             stmtOpt.addBatch();
@@ -95,7 +89,6 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 try {
                     connection.rollback();
                 } catch (SQLException ex) {
-                    // on loggue éventuellement, mais on remonte l'erreur principale
                     ex.printStackTrace();
                 }
                 throw new RuntimeException("Erreur lors de la création de la ligne de commande", e);
@@ -116,10 +109,9 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                 "SELECT id_ligne_commande, quantite, prix_unitaire, id_commande, id_plat " +
                         "FROM ligne_commande WHERE id_commande = ?";
 
-        // On récupère ici uniquement les id_option depuis la table de jointure
-        // ⚠️ adapte le nom de table/champ si besoin
+        // CORRECTION ICI EGALEMENT : 'ligne_option' au lieu de 'ligne_commande_option'
         final String SQL_FIND_OPTIONS_FOR_LIGNE =
-                "SELECT id_option FROM ligne_commande_option WHERE id_ligne_commande = ?";
+                "SELECT id_option FROM ligne_option WHERE id_ligne_commande = ?";
 
         List<LigneCommande> result = new ArrayList<>();
 
@@ -139,17 +131,14 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
                     lc.setQuantite(rs.getInt("quantite"));
                     lc.setPrixUnitaire(rs.getDouble("prix_unitaire"));
 
-                    // Commande associée : on met au moins l'id
                     Commande c = new Commande();
                     c.setIdCommande(rs.getInt("id_commande"));
                     lc.setCommande(c);
 
-                    // Plat associé : on met au moins l'id
                     Plat p = new Plat();
                     p.setIdPlat(rs.getInt("id_plat"));
                     lc.setPlat(p);
 
-                    // Récupération des options associées à cette ligne
                     List<Option> options = new ArrayList<>();
                     try (PreparedStatement stmtOpt = connection.prepareStatement(SQL_FIND_OPTIONS_FOR_LIGNE)) {
                         stmtOpt.setInt(1, lc.getIdLigneCommande());
@@ -179,5 +168,4 @@ public class LigneCommandeServiceImpl implements LigneCommandeService {
         return result;
 //end of modifiable zone..................E/251ac745-be90-49f8-9d21-98baa53c84b0
     }
-
 }

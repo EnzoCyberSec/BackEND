@@ -34,6 +34,7 @@ public class Main {
     private static OptionService optionService = new OptionServiceImpl();
     private static CommandeService commandeService = new CommandeServiceImpl();
     private static LigneCommandeService ligneCommandeService = new LigneCommandeServiceImpl();
+    private static fr.isen.wokandroll.service.StatistiqueService statistiqueService = new fr.isen.wokandroll.service.StatistiqueServiceImpl();
 
     public static void main(String[] args) {
         // Créer et configurer l'application Javalin
@@ -161,6 +162,33 @@ public class Main {
             LigneCommande ligne = ctx.bodyAsClass(LigneCommande.class);
             LigneCommande created = ligneCommandeService.creerLigneCommande(ligne);
             ctx.status(201).json(created);
+        });
+
+        // =======================
+        //      STATISTIQUES
+        // =======================
+
+        // GET /stats/commandes/count - Nombre total de commandes
+        app.get("/stats/commandes/count", ctx -> {
+            long count = statistiqueService.compterCommandes();
+            // On renvoie un petit objet JSON simple
+            ctx.json(java.util.Map.of("nombre_commandes", count));
+        });
+
+        // GET /stats/panier-moyen - Montant moyen des commandes
+        app.get("/stats/panier-moyen", ctx -> {
+            double moyenne = statistiqueService.calculerPanierMoyen();
+            ctx.json(java.util.Map.of("panier_moyen", moyenne));
+        });
+
+        // GET /stats/top-plats - Les plats les plus vendus (défaut top 3, ou ?limit=X)
+        app.get("/stats/top-plats", ctx -> {
+            // On récupère le paramètre "limit" de l'URL, sinon 3 par défaut
+            String limitParam = ctx.queryParam("limit");
+            int limit = (limitParam != null) ? Integer.parseInt(limitParam) : 3;
+
+            List<Plat> tops = statistiqueService.trouverPlatsLesPlusVendus(limit);
+            ctx.json(tops);
         });
 
         // =======================

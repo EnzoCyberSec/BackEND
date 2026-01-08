@@ -1,15 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>API Users</title>
+    <meta charset="UTF-8">
+    <title>API WokAndRoll – Documentation</title>
     <style>
-        /* Styles CSS pour une page d'accueil professionnelle */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e67e22;
+        }
+
+        h2 {
+            margin-top: 40px;
+            color: #2c3e50;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 5px;
+        }
+
+        .endpoint {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fafafa;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .method {
+            padding: 5px 10px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .get { background-color: #27ae60; }
+        .post { background-color: #c0392b; }
+
+        .url {
+            font-family: monospace;
+            font-size: 15px;
+        }
+
+        .description {
+            margin: 10px 0;
+        }
+
+        pre {
+            background-color: #2d3436;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        a.test-link {
+            display: inline-block;
+            margin-top: 5px;
+            color: #2980b9;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>Bienvenue sur l'API Users</h1>
-    <!-- Liste des endpoints avec liens de test -->
+    <h1>🍜 API WokAndRoll – Documentation</h1>
+    <p>
+        Documentation Swagger-like de l’API REST <strong>WokAndRoll</strong>.
+        Cette API permet de gérer les catégories, plats, options, commandes et statistiques.
+    </p>
+
+    <!-- ================= CATEGORIES ================= -->
+    <h2>📂 Catégories</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/categories</span>
+        </div>
+        <p class="description">Retourne la liste de toutes les catégories.</p>
+        <a class="test-link" href="/categories">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/categories/{id}</span>
+        </div>
+        <p class="description">Retourne une catégorie à partir de son identifiant.</p>
+        <a class="test-link" href="/categories/1">Tester</a>
+    </div>
+
+    <!-- ================= PLATS ================= -->
+    <h2>🍱 Plats</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/plats</span>
+        </div>
+        <p class="description">Retourne la liste de tous les plats.</p>
+        <a class="test-link" href="/plats">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/plats/{id}</span>
+        </div>
+        <p class="description">Retourne un plat à partir de son identifiant.</p>
+        <a class="test-link" href="/plats/1">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/plats/{id}/options</span>
+        </div>
+        <p class="description">Retourne les options disponibles pour un plat.</p>
+        <a class="test-link" href="/plats/1/options">Tester</a>
+    </div>
+
+    <!-- ================= COMMANDES ================= -->
+    <h2>🧾 Commandes</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/commandes</span>
+        </div>
+        <p class="description">Retourne toutes les commandes.</p>
+        <a class="test-link" href="/commandes">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="url">/commandes</span>
+        </div>
+        <p class="description">Crée une nouvelle commande.</p>
+        <strong>Exemple de body JSON :</strong>
+        <pre>
+{
+  "dateCommande": "2025-01-08",
+  "total": 25.90
+}
+        </pre>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method post">POST</span>
+            <span class="url">/lignes</span>
+        </div>
+        <p class="description">Ajoute une ligne à une commande.</p>
+        <strong>Exemple de body JSON :</strong>
+        <pre>
+{
+  "idCommande": 1,
+  "idPlat": 2,
+  "quantite": 3
+}
+        </pre>
+    </div>
+
+    <!-- ================= STATS ================= -->
+    <h2>📊 Statistiques</h2>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/stats/commandes/count</span>
+        </div>
+        <p class="description">Retourne le nombre total de commandes.</p>
+        <a class="test-link" href="/stats/commandes/count">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/stats/panier-moyen</span>
+        </div>
+        <p class="description">Retourne le panier moyen.</p>
+        <a class="test-link" href="/stats/panier-moyen">Tester</a>
+    </div>
+
+    <div class="endpoint">
+        <div class="endpoint-header">
+            <span class="method get">GET</span>
+            <span class="url">/stats/top-plats?limit=3</span>
+        </div>
+        <p class="description">Retourne les plats les plus vendus.</p>
+        <a class="test-link" href="/stats/top-plats">Tester</a>
+    </div>
+
+    <footer>
+        🚀 API WokAndRoll — Javalin • Port 7001
+    </footer>
 </div>
+
 </body>
 </html>
