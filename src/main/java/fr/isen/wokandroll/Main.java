@@ -1,17 +1,13 @@
 package fr.isen.wokandroll;
 
+import fr.isen.wokandroll.service.impl.*;
 import io.javalin.Javalin;
 
 import fr.isen.wokandroll.service.CategorieService;
-import fr.isen.wokandroll.service.CategorieServiceImpl;
 import fr.isen.wokandroll.service.PlatService;
-import fr.isen.wokandroll.service.PlatServiceImpl;
 import fr.isen.wokandroll.service.OptionService;
-import fr.isen.wokandroll.service.OptionServiceImpl;
 import fr.isen.wokandroll.service.CommandeService;
-import fr.isen.wokandroll.service.CommandeServiceImpl;
 import fr.isen.wokandroll.service.LigneCommandeService;
-import fr.isen.wokandroll.service.LigneCommandeServiceImpl;
 
 import fr.isen.wokandroll.model.Categorie;
 import fr.isen.wokandroll.model.Plat;
@@ -34,7 +30,7 @@ public class Main {
     private static OptionService optionService = new OptionServiceImpl();
     private static CommandeService commandeService = new CommandeServiceImpl();
     private static LigneCommandeService ligneCommandeService = new LigneCommandeServiceImpl();
-    private static fr.isen.wokandroll.service.StatistiqueService statistiqueService = new fr.isen.wokandroll.service.StatistiqueServiceImpl();
+    private static fr.isen.wokandroll.service.StatistiqueService statistiqueService = new StatistiqueServiceImpl();
 
     public static void main(String[] args) {
         // Créer et configurer l'application Javalin

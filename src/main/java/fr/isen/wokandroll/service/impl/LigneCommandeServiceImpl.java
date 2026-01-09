@@ -1,4 +1,4 @@
-package fr.isen.wokandroll.service;
+package fr.isen.wokandroll.service.impl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import fr.isen.wokandroll.model.Commande;
 import fr.isen.wokandroll.model.LigneCommande;
 import fr.isen.wokandroll.model.Option;
 import fr.isen.wokandroll.model.Plat;
+import fr.isen.wokandroll.service.LigneCommandeService;
 
 public class LigneCommandeServiceImpl implements LigneCommandeService {
     public LigneCommande creerLigneCommande(final LigneCommande ligneCommande) {

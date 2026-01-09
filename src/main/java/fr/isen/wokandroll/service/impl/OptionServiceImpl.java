@@ -1,4 +1,4 @@
-package fr.isen.wokandroll.service;
+package fr.isen.wokandroll.service.impl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import fr.isen.wokandroll.config.DatabaseConfig;
 import fr.isen.wokandroll.model.Option;
+import fr.isen.wokandroll.service.OptionService;
 
 public class OptionServiceImpl implements OptionService {
     public List<Option> findAll() {

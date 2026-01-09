@@ -1,4 +1,4 @@
-package fr.isen.wokandroll.service;
+package fr.isen.wokandroll.service.impl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -6,6 +6,7 @@ import java.util.List;
 
 import fr.isen.wokandroll.config.DatabaseConfig;
 import fr.isen.wokandroll.model.Categorie;
+import fr.isen.wokandroll.service.CategorieService;
 
 public class CategorieServiceImpl implements CategorieService {
     public List<Categorie> findAll() {
