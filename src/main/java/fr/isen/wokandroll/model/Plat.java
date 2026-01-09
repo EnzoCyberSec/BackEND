@@ -1,9 +1,6 @@
 package fr.isen.wokandroll.model;
 
 
-/**
- * Classe Plat
- */
 public class Plat {
     private int idPlat;
 

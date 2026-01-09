@@ -14,7 +14,6 @@ public class CommandeServiceImpl implements CommandeService {
         final String SQL_INSERT =
                 "INSERT INTO commande(date_commande, montant_total) VALUES (?, ?)";
         
-        // valeur qui sera retournée à la fin de la méthode
         Commande result = commande;
         
         try (Connection connection = DriverManager.getConnection(
@@ -25,7 +24,6 @@ public class CommandeServiceImpl implements CommandeService {
                      SQL_INSERT,
                      Statement.RETURN_GENERATED_KEYS)) {
         
-            // Si aucune date n'est renseignée, on met la date courante
             java.util.Date date = (commande.getDateCommande() != null)
                     ? commande.getDateCommande()
                     : new java.util.Date();
@@ -35,7 +33,6 @@ public class CommandeServiceImpl implements CommandeService {
         
             stmt.executeUpdate();
         
-            // Récupération de la clé auto‑générée
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     int generatedId = rs.getInt(1);

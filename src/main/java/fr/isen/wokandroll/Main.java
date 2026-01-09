@@ -33,7 +33,7 @@ public class Main {
     private static fr.isen.wokandroll.service.StatistiqueService statistiqueService = new StatistiqueServiceImpl();
 
     public static void main(String[] args) {
-        // Créer et configurer l'application Javalin
+        // Création et configuration l'application Javalin
         Javalin app = Javalin.create(config -> {
             config.plugins.enableCors(cors -> {
                 cors.add(it -> it.anyHost());
@@ -177,9 +177,8 @@ public class Main {
             ctx.json(java.util.Map.of("panier_moyen", moyenne));
         });
 
-        // GET /stats/top-plats - Les plats les plus vendus (défaut top 3, ou ?limit=X)
+        // GET /stats/top-plats - Les plats les plus vendus (défaut 3)
         app.get("/stats/top-plats", ctx -> {
-            // On récupère le paramètre "limit" de l'URL, sinon 3 par défaut
             String limitParam = ctx.queryParam("limit");
             int limit = (limitParam != null) ? Integer.parseInt(limitParam) : 3;
 
@@ -198,7 +197,7 @@ public class Main {
     }
 
     /**
-     * Charge la page HTML d'accueil depuis les ressources
+     * Charge la page HTML d'accueil
      */
     private static String getWelcomeHTML() {
         try {
